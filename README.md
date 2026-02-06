@@ -1,6 +1,6 @@
-# Firefly OpenCore Banking Platform — lib-idp-keycloak-impl
+# Firefly Framework — fireflyframework-idp-keycloak-impl
 
-Identity Provider (IdP) adapter that implements the Firefly lib-idp port using Keycloak. It exposes a reactive (Spring WebFlux) REST API for authentication and authorization and provides an administrative surface for user, role, scope, session, and MFA management.
+Identity Provider (IdP) adapter that implements the Firefly fireflyframework-idp port using Keycloak. It exposes a reactive (Spring WebFlux) REST API for authentication and authorization and provides an administrative surface for user, role, scope, session, and MFA management.
 
 
 ---
@@ -28,10 +28,10 @@ Identity Provider (IdP) adapter that implements the Firefly lib-idp port using K
 ---
 
 ## Overview
-This repository provides the Keycloak-backed implementation of the Firefly lib-idp adapter. Within a hexagonal (ports-and-adapters) architecture, it delegates identity operations to a configured Keycloak realm and presents a consistent HTTP/JSON interface for Firefly services.
+This repository provides the Keycloak-backed implementation of the Firefly fireflyframework-idp adapter. Within a hexagonal (ports-and-adapters) architecture, it delegates identity operations to a configured Keycloak realm and presents a consistent HTTP/JSON interface for Firefly services.
 
 What this project is:
-- An adapter of the Firefly lib-idp port backed by Keycloak
+- An adapter of the Firefly fireflyframework-idp port backed by Keycloak
 - A focused service exposing consistent IdP APIs for Firefly components
 - Reactive (non-blocking) using Spring WebFlux
 
@@ -40,17 +40,17 @@ What this project is not:
 - A replacement for Keycloak server configuration/operations
 
 ## Architecture
-- Ports: Provided by the upstream dependency `com.firefly:lib-idp-adapter` (DTOs and `IdpAdapter` interface)
+- Ports: Provided by the upstream dependency `org.fireflyframework:fireflyframework-idp-adapter` (DTOs and `IdpAdapter` interface)
 - Adapter/Implementation: This repository implements `IdpAdapter` using Keycloak Admin Client APIs
 - Transport: HTTP/JSON over Spring WebFlux
 - Config: Strongly-typed via `KeycloakProperties`
 
 Packages of interest:
-- `com.firefly.idp.adapter.controller` — REST controller layer (public API)
-- `com.firefly.idp.adapter.service.*` — user/admin/token services
-- `com.firefly.idp.adapter.keycloak.*` — factories and integration with Keycloak
-- `com.firefly.idp.properties` — Keycloak properties binding
-- `com.firefly.idp.adapter.exception` — exception handling
+- `org.fireflyframework.idp.adapter.controller` — REST controller layer (public API)
+- `org.fireflyframework.idp.adapter.service.*` — user/admin/token services
+- `org.fireflyframework.idp.adapter.keycloak.*` — factories and integration with Keycloak
+- `org.fireflyframework.idp.properties` — Keycloak properties binding
+- `org.fireflyframework.idp.adapter.exception` — exception handling
 
 ## Requirements
 - Java 21+
@@ -93,11 +93,11 @@ keycloak:
 Using Maven:
 - Build: `mvn -U -DskipTests clean package`
 - Run (from sources): `mvn spring-boot:run`
-- Run (from jar): `java -jar target/lib-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
+- Run (from jar): `java -jar target/fireflyframework-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
 
 Activate a profile (example: dev):
 - `mvn spring-boot:run -Dspring-boot.run.profiles=dev`
-- or `java -Dspring.profiles.active=dev -jar target/lib-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
+- or `java -Dspring.profiles.active=dev -jar target/fireflyframework-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
 
 ## API
 Base path: `/idp`
@@ -127,7 +127,7 @@ Base path: `/idp`
 - POST `/idp/admin/mfa/verify` — Verify MFA challenge
 
 Notes:
-- Request/response DTOs are provided by the upstream `lib-idp-adapter` module (package `com.firefly.idp.dtos`). Consult that module for exact schema.
+- Request/response DTOs are provided by the upstream `fireflyframework-idp-adapter` module (package `org.fireflyframework.idp.dtos`). Consult that module for exact schema.
 - Authorization header: Use `Authorization: Bearer <access_token>` where applicable.
 
 ### Examples
@@ -157,7 +157,7 @@ curl -X POST http://localhost:8085/idp/logout \
 
 ## Development Notes
 - Reactive stack: Spring WebFlux
-- DTOs and adapter port come from `com.firefly:lib-idp-adapter`
+- DTOs and adapter port come from `org.fireflyframework:fireflyframework-idp-adapter`
 - MapStruct is used for mappings where needed; Lombok reduces boilerplate
 
 ## Troubleshooting
@@ -166,7 +166,7 @@ curl -X POST http://localhost:8085/idp/logout \
 - Connectivity: check `keycloak.server-url` and Keycloak availability
 
 ## Versioning
-- Maven coordinates: `com.firefly:lib-idp-keycloak-impl:1.0.0-SNAPSHOT`
+- Maven coordinates: `org.fireflyframework:fireflyframework-idp-keycloak-impl:1.0.0-SNAPSHOT`
 - Java version: 21
 
 ## Contributing

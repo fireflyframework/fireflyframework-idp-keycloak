@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package com.firefly.idp.config;
 
-import com.firefly.idp.properties.KeycloakProperties;
+package org.fireflyframework.idp;
+
+import org.fireflyframework.idp.properties.KeycloakProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-/**
- * Auto-configuration for Keycloak IDP adapter.
- * Enables KeycloakProperties and makes it available as a Spring bean.
- */
-@Configuration
+@SpringBootApplication
 @EnableConfigurationProperties(KeycloakProperties.class)
 @Slf4j
-public class KeycloakAutoConfiguration {
-    
-    public KeycloakAutoConfiguration() {
-        log.info("✅ Keycloak IDP adapter auto-configuration loaded");
+public class LibIdpKeycloakImplApplication {
+
+    public static void main(String[] args) {
+        log.info("Starting fireflyframework-idp-keycloak-impl application");
+        SpringApplication.run(LibIdpKeycloakImplApplication.class, args);
     }
 }

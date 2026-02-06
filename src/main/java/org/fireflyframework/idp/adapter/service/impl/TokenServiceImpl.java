@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  */
 
 
-package com.firefly.idp.adapter.service.impl;
+package org.fireflyframework.idp.adapter.service.impl;
 
-import com.firefly.idp.adapter.service.TokenService;
+import org.fireflyframework.idp.adapter.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.TokenVerifier;
 import org.keycloak.common.VerificationException;

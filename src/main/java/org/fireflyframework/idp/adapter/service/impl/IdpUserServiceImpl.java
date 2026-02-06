@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 
 
-package com.firefly.idp.adapter.service.impl;
+package org.fireflyframework.idp.adapter.service.impl;
 
-import com.firefly.idp.adapter.exception.KeycloakExceptionHandler;
-import com.firefly.idp.adapter.keycloak.KeycloakAPIFactory;
-import com.firefly.idp.adapter.service.IdpUserService;
-import com.firefly.idp.dtos.*;
+import org.fireflyframework.idp.adapter.exception.KeycloakExceptionHandler;
+import org.fireflyframework.idp.adapter.keycloak.KeycloakAPIFactory;
+import org.fireflyframework.idp.adapter.service.IdpUserService;
+import org.fireflyframework.idp.dtos.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

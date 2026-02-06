@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +15,23 @@
  */
 
 
-package com.firefly.idp.adapter.dtos;
+package org.fireflyframework.idp.adapter.service;
 
-import com.firefly.idp.dtos.TokenResponse;
-import lombok.Getter;
-import lombok.Setter;
+import org.keycloak.representations.AccessToken;
 
 import java.util.List;
+import java.util.Optional;
 
-/**
- * Extends the external TokenResponse to include a list of user roles.
- * Returning this subclass where a TokenResponse is expected allows
- * controllers to serialize the extra field without changing the API signature.
- */
+public interface TokenService {
+    Optional<AccessToken> parseAccessToken(String tokenString);
 
-@Getter
-@Setter
-public class ExtendedTokenResponse extends TokenResponse {
+    Optional<String> extractUserId(String tokenString);
 
-    private List<String> roles;
+    Optional<String> extractSessionId(String tokenString);
 
-    public ExtendedTokenResponse() {
-        super();
-    }
+    List<String> extractRoles(String jwtAccessToken);
 
+    List<String> extractRolesFromAccessToken(AccessToken accessToken);
+
+    boolean isTokenExpired(String tokenString);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 
 
-package com.firefly.idp.adapter.impl;
+package org.fireflyframework.idp.adapter.impl;
 
-import com.firefly.idp.adapter.IdpAdapter;
-import com.firefly.idp.adapter.service.IdpAdminService;
-import com.firefly.idp.adapter.service.IdpUserService;
-import com.firefly.idp.dtos.*;
+import org.fireflyframework.idp.adapter.IdpAdapter;
+import org.fireflyframework.idp.adapter.service.IdpAdminService;
+import org.fireflyframework.idp.adapter.service.IdpUserService;
+import org.fireflyframework.idp.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

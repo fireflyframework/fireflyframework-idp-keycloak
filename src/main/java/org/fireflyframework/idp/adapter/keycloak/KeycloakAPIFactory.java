@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Firefly Software Solutions Inc
+ * Copyright 2024-2026 Firefly Software Solutions Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 
 
-package com.firefly.idp.adapter.keycloak;
+package org.fireflyframework.idp.adapter.keycloak;
 
-import com.firefly.idp.dtos.LoginRequest;
-import com.firefly.idp.properties.KeycloakProperties;
+import org.fireflyframework.idp.dtos.LoginRequest;
+import org.fireflyframework.idp.properties.KeycloakProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.OAuth2Constants;
 import org.springframework.stereotype.Component;
