@@ -167,7 +167,7 @@ curl -X POST http://localhost:8085/idp/logout \
 
 ## Versioning
 - Maven coordinates: `org.fireflyframework:fireflyframework-idp-keycloak-impl:1.0.0-SNAPSHOT`
-- Java version: 21
+- Java version: 25 (Java 21+ compatible)
 
 ## Contributing
 Issues and PRs are welcome. Please include clear reproduction steps and tests when applicable.
