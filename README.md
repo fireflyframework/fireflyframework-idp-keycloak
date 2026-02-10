@@ -1,5 +1,7 @@
 # Firefly Framework — fireflyframework-idp-keycloak-impl
 
+[![CI](https://github.com/fireflyframework/fireflyframework-idp-keycloak/actions/workflows/ci.yml/badge.svg)](https://github.com/fireflyframework/fireflyframework-idp-keycloak/actions/workflows/ci.yml)
+
 Identity Provider (IdP) adapter that implements the Firefly fireflyframework-idp port using Keycloak. It exposes a reactive (Spring WebFlux) REST API for authentication and authorization and provides an administrative surface for user, role, scope, session, and MFA management.
 
 
