@@ -1,178 +1,101 @@
-# Firefly Framework — fireflyframework-idp-keycloak-impl
+# Firefly Framework - IDP - Keycloak
 
 [![CI](https://github.com/fireflyframework/fireflyframework-idp-keycloak/actions/workflows/ci.yml/badge.svg)](https://github.com/fireflyframework/fireflyframework-idp-keycloak/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)](https://openjdk.org)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green.svg)](https://spring.io/projects/spring-boot)
 
-Identity Provider (IdP) adapter that implements the Firefly fireflyframework-idp port using Keycloak. It exposes a reactive (Spring WebFlux) REST API for authentication and authorization and provides an administrative surface for user, role, scope, session, and MFA management.
-
+> Keycloak implementation of the Firefly IDP adapter with admin API integration and REST controller.
 
 ---
 
 ## Table of Contents
+
 - [Overview](#overview)
-- [Architecture](#architecture)
+- [Features](#features)
 - [Requirements](#requirements)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Configuration](#configuration)
-  - [Key properties](#key-properties)
-  - [Profiles](#profiles)
-  - [Example application.yaml](#example-applicationyaml)
-- [Build and Run](#build-and-run)
-- [API](#api)
-  - [User endpoints](#user-endpoints)
-  - [Admin endpoints](#admin-endpoints)
-  - [Examples](#examples)
-- [Security and CORS](#security-and-cors)
-- [Development Notes](#development-notes)
-- [Troubleshooting](#troubleshooting)
-- [Versioning](#versioning)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
----
-
 ## Overview
-This repository provides the Keycloak-backed implementation of the Firefly fireflyframework-idp adapter. Within a hexagonal (ports-and-adapters) architecture, it delegates identity operations to a configured Keycloak realm and presents a consistent HTTP/JSON interface for Firefly services.
 
-What this project is:
-- An adapter of the Firefly fireflyframework-idp port backed by Keycloak
-- A focused service exposing consistent IdP APIs for Firefly components
-- Reactive (non-blocking) using Spring WebFlux
+Firefly Framework IDP Keycloak implements the `IdpAdapter` interface using Keycloak as the identity provider. It provides user management, authentication, token operations, and administrative functions through both the Keycloak Admin REST API and the token endpoint.
 
-What this project is not:
-- A user-facing identity UI
-- A replacement for Keycloak server configuration/operations
+The module includes `IdpAdapterImpl` as the main adapter, backed by `IdpUserService` for user-facing operations, `IdpAdminService` for administrative functions, and `TokenService` for token management. It features a built-in `IdpController` REST endpoint for direct IDP operations and a `KeycloakExceptionHandler` for standardized error responses.
 
-## Architecture
-- Ports: Provided by the upstream dependency `org.fireflyframework:fireflyframework-idp-adapter` (DTOs and `IdpAdapter` interface)
-- Adapter/Implementation: This repository implements `IdpAdapter` using Keycloak Admin Client APIs
-- Transport: HTTP/JSON over Spring WebFlux
-- Config: Strongly-typed via `KeycloakProperties`
+Auto-configuration is provided via `KeycloakAutoConfiguration` with configurable connection properties through `KeycloakProperties`.
 
-Packages of interest:
-- `org.fireflyframework.idp.adapter.controller` — REST controller layer (public API)
-- `org.fireflyframework.idp.adapter.service.*` — user/admin/token services
-- `org.fireflyframework.idp.adapter.keycloak.*` — factories and integration with Keycloak
-- `org.fireflyframework.idp.properties` — Keycloak properties binding
-- `org.fireflyframework.idp.adapter.exception` — exception handling
+## Features
+
+- Full `IdpAdapter` implementation using Keycloak Admin API
+- Built-in `IdpController` REST endpoint for IDP operations
+- User service for authentication, registration, and profile management
+- Admin service for realm and user administration
+- Token service for token exchange, refresh, and introspection
+- `KeycloakClientFactory` and `KeycloakAPIFactory` for API connection management
+- CORS configuration for cross-origin requests
+- Keycloak-specific exception handler
+- Spring Boot auto-configuration via `KeycloakAutoConfiguration`
+- Configurable via `KeycloakProperties`
 
 ## Requirements
+
 - Java 21+
+- Spring Boot 3.x
 - Maven 3.9+
-- Access to a Keycloak server (tested with 26.x)
+- Keycloak server instance
+
+## Installation
+
+```xml
+<dependency>
+    <groupId>org.fireflyframework</groupId>
+    <artifactId>fireflyframework-idp-keycloak</artifactId>
+    <version>26.01.01</version>
+</dependency>
+```
+
+## Quick Start
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-idp</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-idp-keycloak</artifactId>
+    </dependency>
+</dependencies>
+```
 
 ## Configuration
-Application uses `application.yaml` with environment-variable overrides. All Keycloak properties are under the `keycloak` prefix.
 
-### Key properties
-- `keycloak.server-url` (env: `KEYCLOAK_SERVER_URL`) — Base URL to Keycloak, e.g., `http://localhost:8080`
-- `keycloak.realm` (env: `KEYCLOAK_REALM`) — Realm name, e.g., `testrealm`
-- `keycloak.client-id` (env: `KEYCLOAK_CLIENT_ID`) — Client ID
-- `keycloak.client-secret` (env: `KEYCLOAK_CLIENT_SECRET`) — Client secret (if applicable)
-- `keycloak.connection-pool-size` (env: `KEYCLOAK_CONNECTION_POOL_SIZE`) — Default `10`
-- `keycloak.connection-timeout` (env: `KEYCLOAK_CONNECTION_TIMEOUT`) — Milliseconds, default `30000`
-- `keycloak.request-timeout` (env: `KEYCLOAK_REQUEST_TIMEOUT`) — Milliseconds, default `60000`
-
-Other runtime settings:
-- `server.port` — defaults to `8085`
-
-### Profiles
-- `dev` — developer-friendly logs
-- `testing` — enables OpenAPI/Swagger UI
-- `prod` — production-lean logging; Swagger disabled
-
-### Example application.yaml
 ```yaml
-keycloak:
-  server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8080}
-  realm: ${KEYCLOAK_REALM:testrealm}
-  client-id: ${KEYCLOAK_CLIENT_ID:myapp-client}
-  client-secret: ${KEYCLOAK_CLIENT_SECRET:change-me}
-  connection-pool-size: ${KEYCLOAK_CONNECTION_POOL_SIZE:10}
-  connection-timeout: ${KEYCLOAK_CONNECTION_TIMEOUT:30000}
-  request-timeout: ${KEYCLOAK_REQUEST_TIMEOUT:60000}
+firefly:
+  idp:
+    keycloak:
+      server-url: http://localhost:8080
+      realm: my-realm
+      client-id: my-app
+      client-secret: my-secret
 ```
 
-## Build and Run
-Using Maven:
-- Build: `mvn -U -DskipTests clean package`
-- Run (from sources): `mvn spring-boot:run`
-- Run (from jar): `java -jar target/fireflyframework-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
+## Documentation
 
-Activate a profile (example: dev):
-- `mvn spring-boot:run -Dspring-boot.run.profiles=dev`
-- or `java -Dspring.profiles.active=dev -jar target/fireflyframework-idp-keycloak-impl-1.0.0-SNAPSHOT.jar`
-
-## API
-Base path: `/idp`
-
-### User endpoints
-- POST `/idp/login` — Authenticate and obtain tokens
-- POST `/idp/refresh` — Refresh access token using a refresh token
-- POST `/idp/logout` — Invalidate the current access token
-- GET `/idp/introspect` — Introspect access token
-- GET `/idp/userinfo` — Retrieve user info for access token
-- POST `/idp/revoke-refresh-token?refreshToken=...` — Revoke a refresh token
-
-### Admin endpoints
-- POST `/idp/admin/users` — Create user
-- PUT `/idp/admin/users` — Update user
-- DELETE `/idp/admin/users/{userId}` — Delete user
-- GET `/idp/admin/users/{userId}/roles` — List user roles
-- POST `/idp/admin/roles` — Create roles
-- POST `/idp/admin/scopes` — Create scope
-- POST `/idp/admin/users/roles/assign` — Assign roles to user
-- POST `/idp/admin/users/roles/remove` — Remove roles from user
-- POST `/idp/admin/password` — Change password
-- POST `/idp/admin/password/reset?username=...` — Reset password
-- GET `/idp/admin/users/{userId}/sessions` — List user sessions
-- DELETE `/idp/admin/sessions/{sessionId}` — Revoke session
-- POST `/idp/admin/mfa/challenge?username=...` — Trigger MFA challenge
-- POST `/idp/admin/mfa/verify` — Verify MFA challenge
-
-Notes:
-- Request/response DTOs are provided by the upstream `fireflyframework-idp-adapter` module (package `org.fireflyframework.idp.dtos`). Consult that module for exact schema.
-- Authorization header: Use `Authorization: Bearer <access_token>` where applicable.
-
-### Examples
-Login:
-```bash
-curl -X POST http://localhost:8085/idp/login \
-  -H 'Content-Type: application/json' \
-  -d '{"username":"alice","password":"secret"}'
-```
-
-Introspect:
-```bash
-curl -X GET http://localhost:8085/idp/introspect \
-  -H 'Authorization: Bearer <access_token>'
-```
-
-Logout:
-```bash
-curl -X POST http://localhost:8085/idp/logout \
-  -H 'Authorization: Bearer <access_token>'
-```
-
-## Security and CORS
-- CORS is enabled via a permissive configuration (`CorsWebFilter`). Adjust allowed origins/headers/methods for production.
-- Access tokens and refresh tokens are masked in logs where applicable.
-- Swagger/OpenAPI is enabled only in the `testing` profile by default.
-
-## Development Notes
-- Reactive stack: Spring WebFlux
-- DTOs and adapter port come from `org.fireflyframework:fireflyframework-idp-adapter`
-- MapStruct is used for mappings where needed; Lombok reduces boilerplate
-
-## Troubleshooting
-- 401/403: verify realm, client credentials, token audience/scope
-- Timeouts: tune `keycloak.connection-timeout` and `keycloak.request-timeout`
-- Connectivity: check `keycloak.server-url` and Keycloak availability
-
-## Versioning
-- Maven coordinates: `org.fireflyframework:fireflyframework-idp-keycloak-impl:1.0.0-SNAPSHOT`
-- Java version: 25 (Java 21+ compatible)
+No additional documentation available for this project.
 
 ## Contributing
-Issues and PRs are welcome. Please include clear reproduction steps and tests when applicable.
+
+Contributions are welcome. Please read the [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on our code of conduct, development process, and how to submit pull requests.
 
 ## License
-Licensed under the Apache License, Version 2.0. See the LICENSE file for details.
+
+Copyright 2024-2026 Firefly Software Solutions Inc.
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
