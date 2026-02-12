@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.http.client.reactive.ClientHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,7 +34,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  * Factory bean to centralize creation of Keycloak admin client instances.
  * This avoids duplicating builder configuration across service methods.
  */
-@Component
 @Slf4j
 public class KeycloakClientFactory {
 

@@ -33,7 +33,6 @@ import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.AccessTokenResponse;
 import org.keycloak.representations.idm.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -41,7 +40,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
 @Slf4j
 public class IdpAdminServiceImpl implements IdpAdminService {
 

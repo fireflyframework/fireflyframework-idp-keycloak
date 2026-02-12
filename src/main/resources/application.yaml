@@ -19,14 +19,16 @@ logging:
   jackson:
     property-naming-strategy: SNAKE_CASE
 
-keycloak:
-  server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8080}
-  realm: ${KEYCLOAK_REALM:master}
-  client-id: ${KEYCLOAK_CLIENT_ID:firefly_client}
-  client-secret: ${KEYCLOAK_CLIENT_SECRET:UPML4NfnuDh8CWbhJcOrGXqkUjgmuI1o}
-  connection-pool-size: ${KEYCLOAK_CONNECTION_POOL_SIZE:10}
-  connection-timeout: ${KEYCLOAK_CONNECTION_TIMEOUT:30000}
-  request-timeout: ${KEYCLOAK_REQUEST_TIMEOUT:60000}
+firefly:
+  idp:
+    keycloak:
+      server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8080}
+      realm: ${KEYCLOAK_REALM:master}
+      client-id: ${KEYCLOAK_CLIENT_ID:firefly_client}
+      client-secret: ${KEYCLOAK_CLIENT_SECRET:UPML4NfnuDh8CWbhJcOrGXqkUjgmuI1o}
+      connection-pool-size: ${KEYCLOAK_CONNECTION_POOL_SIZE:10}
+      connection-timeout: ${KEYCLOAK_CONNECTION_TIMEOUT:30000}
+      request-timeout: ${KEYCLOAK_REQUEST_TIMEOUT:60000}
 
 ---
 spring:

@@ -23,12 +23,10 @@ import org.fireflyframework.idp.adapter.service.IdpUserService;
 import org.fireflyframework.idp.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Service
 public class IdpAdapterImpl implements IdpAdapter {
 
     private final IdpUserService userService;

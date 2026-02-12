@@ -16,21 +16,92 @@
 
 package org.fireflyframework.idp.config;
 
+import org.fireflyframework.idp.adapter.IdpAdapter;
+import org.fireflyframework.idp.adapter.impl.IdpAdapterImpl;
+import org.fireflyframework.idp.adapter.keycloak.KeycloakAPIFactory;
+import org.fireflyframework.idp.adapter.keycloak.KeycloakClientFactory;
+import org.fireflyframework.idp.adapter.service.IdpAdminService;
+import org.fireflyframework.idp.adapter.service.IdpUserService;
+import org.fireflyframework.idp.adapter.service.TokenService;
+import org.fireflyframework.idp.adapter.service.impl.IdpAdminServiceImpl;
+import org.fireflyframework.idp.adapter.service.impl.IdpUserServiceImpl;
+import org.fireflyframework.idp.adapter.service.impl.TokenServiceImpl;
 import org.fireflyframework.idp.properties.KeycloakProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.admin.client.Keycloak;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 /**
  * Auto-configuration for Keycloak IDP adapter.
- * Enables KeycloakProperties and makes it available as a Spring bean.
+ * Registers all Keycloak adapter beans when the keycloak provider is selected.
  */
-@Configuration
+@AutoConfiguration
+@ConditionalOnProperty(name = "firefly.idp.provider", havingValue = "keycloak")
+@ConditionalOnClass(Keycloak.class)
 @EnableConfigurationProperties(KeycloakProperties.class)
 @Slf4j
 public class KeycloakAutoConfiguration {
-    
+
     public KeycloakAutoConfiguration() {
-        log.info("✅ Keycloak IDP adapter auto-configuration loaded");
+        log.info("Keycloak IDP adapter auto-configuration loaded");
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public KeycloakClientFactory keycloakClientFactory(KeycloakProperties properties) {
+        return new KeycloakClientFactory(properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public KeycloakAPIFactory keycloakAPIFactory(KeycloakProperties properties) {
+        return new KeycloakAPIFactory(properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TokenService.class)
+    public TokenService tokenService() {
+        return new TokenServiceImpl();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IdpAdminService.class)
+    public IdpAdminService idpAdminService(KeycloakClientFactory keycloakClientFactory, TokenService tokenService) {
+        return new IdpAdminServiceImpl(keycloakClientFactory, tokenService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IdpUserService.class)
+    public IdpUserService idpUserService(KeycloakAPIFactory keycloakAPIFactory) {
+        return new IdpUserServiceImpl(keycloakAPIFactory);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IdpAdapter.class)
+    public IdpAdapter idpAdapter(IdpUserService idpUserService, IdpAdminService idpAdminService) {
+        return new IdpAdapterImpl(idpUserService, idpAdminService);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(CorsWebFilter.class)
+    public CorsWebFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsWebFilter(source);
     }
 }

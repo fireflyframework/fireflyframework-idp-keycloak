@@ -24,7 +24,6 @@ import org.fireflyframework.idp.dtos.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +35,6 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-@Service
 @Slf4j
 public class IdpUserServiceImpl implements IdpUserService {
 
