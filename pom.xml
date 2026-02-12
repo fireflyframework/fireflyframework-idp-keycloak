@@ -7,16 +7,16 @@
     <parent>
         <groupId>org.fireflyframework</groupId>
         <artifactId>fireflyframework-parent</artifactId>
-        <version>26.02.01</version>
+        <version>26.02.02</version>
         <relativePath/>
     </parent>
 
     <artifactId>fireflyframework-idp-keycloak</artifactId>
-    <version>26.02.01</version>
+    <version>26.02.02</version>
     <packaging>jar</packaging>
 
     <properties>
-        <fireflyframework-idp.version>26.02.01</fireflyframework-idp.version>
+        <fireflyframework-idp.version>26.02.02</fireflyframework-idp.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <keycloak.admin.version>26.0.8</keycloak.admin.version>
     </properties>
