@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.TokenVerifier;
 import org.keycloak.common.VerificationException;
 import org.keycloak.representations.AccessToken;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
  * Service for token validation and information extraction.
  * Centralizes JWT processing logic.
  */
-@Service
 @Slf4j
 public class TokenServiceImpl implements TokenService {
 

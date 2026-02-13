@@ -21,7 +21,6 @@ import org.fireflyframework.idp.dtos.LoginRequest;
 import org.fireflyframework.idp.properties.KeycloakProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.OAuth2Constants;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -31,7 +30,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  * Extracted from KeycloakClientFactory to separate WebClient/OIDC helpers
  * from Admin client builders.
  */
-@Component
 @Slf4j
 public class KeycloakAPIFactory {
 
