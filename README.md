@@ -55,7 +55,7 @@ Auto-configuration is provided via `KeycloakAutoConfiguration` with configurable
 <dependency>
     <groupId>org.fireflyframework</groupId>
     <artifactId>fireflyframework-idp-keycloak</artifactId>
-    <version>26.02.06</version>
+    <version>26.02.07</version>
 </dependency>
 ```
 
